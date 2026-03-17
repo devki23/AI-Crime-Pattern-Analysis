@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Crime Pattern Analysis</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-left: #1e293b;
+            --panel-right: #ffffff;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --input-bg: #020617;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+            color: var(--text-main);
+            height: 100vh;
+            /* Changed from fixed height/overflow hidden to allow scrolling */
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 2rem 0;
+            /* Add padding for smaller screens */
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            height: auto;
+            min-height: 600px;
+            /* max-height: 95vh;  <-- Removed to allow scrolling */
+            display: flex;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            flex: 1;
+            padding: 3rem 2.5rem;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8)),
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .brand {
+            margin-bottom: 2rem;
+        }
+
+        .brand h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 90%;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.8rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Right Panel */
+        .right-panel {
+            flex: 1;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .login-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .login-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+            /* Explicitly set to white */
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .input-wrapper .icon-left {
+            left: 1rem;
+        }
+
+        .input-wrapper .toggle-password {
+            right: 1rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .input-wrapper .toggle-password:hover {
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                height: 100vh;
+                border-radius: 0;
+                overflow-y: auto;
+            }
+
+            .left-panel {
+                padding: 3rem 2rem;
+                min-height: 40vh;
+            }
+
+            .brand h1 {
+                font-size: 2.5rem;
+            }
+
+            .right-panel {
+                padding: 3rem 2rem;
+                background: #fff;
+                /* Ensure white on mobile too */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Left Panel: Info & Branding -->
+        <div class="left-panel">
+            <div class="brand">
+                <a href="/"
+                    style="text-decoration: none; display: inline-block; margin-bottom: 1rem; color: #3b82f6; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <h1>AI-Powered <br>Crime Pattern Analysis</h1>
+                <p>Revolutionize law enforcement with our advanced AI system. Detect patterns, identify hotspots, and
+                    prevent criminal activities before they happen.</p>
+            </div>
+
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <span>AI-Powered Recognition & Analysis</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-location-dot"></i>
+                    </div>
+                    <span>Real-time Crime Hotspot Detection</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <span>Secure Role-Based Access Control</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <span>Advanced Data Analytics & Reporting</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Login Form -->
+        <div class="right-panel">
+            <div class="login-box">
+                <div class="login-header">
+                    <h2>Secure Login</h2>
+                    <p>Enter credentials to access the dashboard</p>
+                </div>
+
+                <div id="login-error"
+                    style="display: none; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; text-align: center;">
+                    <i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i>
+                    <span id="login-error-text"></span>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="role">Select Role</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user-tag icon-left"></i>
+                            <select id="role" class="form-control" onchange="toggleAadharField()">
+                                <option value="admin">Administrator</option>
+                                <option value="officer">Police Station Officer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username / Officer ID</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-badge icon-left"></i>
+                            <input type="text" id="username" class="form-control"
+                                placeholder="Enter Username or Officer ID" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock icon-left"></i>
+                            <input type="password" id="password" class="form-control" style="padding-right: 2.5rem;"
+                                placeholder="••••••••" required>
+                            <i class="fas fa-eye toggle-password"
+                                style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; cursor: pointer; z-index: 100; font-size: 1.1rem;"
+                                onclick="togglePasswordVisibility('password', this)"
+                                onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#94a3b8'"
+                                title="Show Password"></i>
+                        </div>
+                    </div>
+
+                    <!-- Aadhar field: required for police officers only -->
+                    <div class="form-group" id="aadhar-group" style="display: none;">
+                        <label for="aadhar"><i class="fas fa-id-card" style="color: #3b82f6; margin-right: 5px;"></i>
+                            Aadhar Card Number</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-card icon-left"></i>
+                            <input type="text" id="aadhar" class="form-control"
+                                placeholder="Enter 12-digit Aadhar number" maxlength="12" inputmode="numeric">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        Access System <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                    </button>
+
+                    <div class="register-link">
+                        Don't have an account? <a href="/register">Register Now</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                icon.title = 'Hide Password';
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                icon.title = 'Show Password';
+            }
+        }
+
+        function toggleAadharField() {
+            const role = document.getElementById('role').value;
+            const aadharGroup = document.getElementById('aadhar-group');
+            const aadharInput = document.getElementById('aadhar');
+            if (role === 'officer') {
+                aadharGroup.style.display = 'block';
+                aadharInput.required = true;
+            } else {
+                aadharGroup.style.display = 'none';
+                aadharInput.required = false;
+                aadharInput.value = '';
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
+            errorText.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            // Hide previous errors
+            document.getElementById('login-error').style.display = 'none';
+
+            const role = document.getElementById('role').value;
+            // Capture username/ID 
+            const identifier = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!identifier || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            const btn = document.querySelector('.btn-login');
+            const originalText = btn.innerHTML;
+
+            // Simulate loading
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            try {
+                // Determine if it's an email or username
+                const payload = {};
+                if (identifier.includes('@')) {
+                    payload.email = identifier;
+                } else {
+                    payload.username = identifier;
+                }
+                payload.password = password;
+                payload.role = role;
+
+                // Include Aadhar for officer login
+                if (role === 'officer') {
+                    const aadhar = document.getElementById('aadhar').value.trim();
+                    if (!aadhar) {
+                        showError('Aadhar Card Number is required for officer login.');
+                        btn.innerHTML = originalText;
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                        return;
+                    }
+                    if (!/^\d{12}$/.test(aadhar)) {
+                        showError('Aadhar Card Number must be exactly 12 digits.');
+                        btn.innerHTML = originalText;
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                        return;
+                    }
+                    payload.aadhar_number = aadhar;
+                }
+
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // Update: Store user object string
+                    localStorage.setItem('crime_ai_user', JSON.stringify(data.user));
+                    localStorage.setItem('crime_ai_role', data.user.role);
+                    localStorage.setItem('crime_ai_auth', 'true');
+
+                    // Allow admin to login as officer, but not vice versa if strict
+                    // Ideally, check role match
+                    if (data.user.role !== role && data.user.role !== 'admin') {
+                        showError(`Warning: You are logging in as ${data.user.role} account but selected ${role} role.`);
+                        // Optional: prevent login or just warn. Proceeding for now as per previous logic, but arguably should stop.
+                    }
+
+                    // Redirect based on role
+                    if (data.user.role === 'admin') {
+                        window.location.href = '/admin_dashboard';
+                    } else {
+                        window.location.href = '/dashboard';
+                    }
+                } else {
+                    showError(data.message || 'Login failed');
+                    btn.innerHTML = originalText;
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                showError('Login request failed. Please check server connection.');
+                btn.innerHTML = originalText;
+                btn.style.opacity = '1';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
