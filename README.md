@@ -85,4 +85,32 @@ These identified clusters represent **crime hotspots**, which can help authoriti
 
 ## Installation Steps
 
-1. Clone the repository
+1. Install required Python libraries: pip install -r requirements.txt
+2. Configure the database (MySQL)
+3. Run the application: python app.py
+4. Open browser: http://127.0.0.1:5000
+
+---
+
+## Future Enhancements
+
+- Real-time crime data integration
+- Advanced predictive analytics
+- Crime heatmap visualization
+- Mobile application for officers
+- Integration with government crime databases
+
+---
+
+## Conclusion
+
+The AI-Powered Crime Pattern Analysis System demonstrates how artificial intelligence and data analysis can help law enforcement agencies better understand crime patterns and improve public safety.
+
+---
+
+## Author
+
+Devki Prajapati  
+BCA (Hons) – GLS University  
+Capstone Project
+
